@@ -22,6 +22,7 @@ handler.push_application()
 
 logger = logbook.Logger(os.path.splitext(os.path.basename(__file__))[0])
 
+
 def parse_option():
     description = ""
     epilog = ""
@@ -69,6 +70,7 @@ def parse_option():
 
     return parser.parse_args()
 
+
 def get_win_generator():
     re_vs = re.compile("Microsoft Visual Studio [0-9]+[\.][0-9]+")
     re_vs_version = re.compile("[0-9]+")
@@ -84,19 +86,21 @@ def get_win_generator():
     vs_version = 0
 
     for search_drive, program_files_dir in itertools.product(
-        search_drive_list, program_files_dir_list):
-        
+            search_drive_list, program_files_dir_list):
+
         try:
-            dir_list = os.listdir("{:s}\\{:s}".format(search_drive, program_files_dir))
+            dir_list = os.listdir(
+                "{:s}\\{:s}".format(search_drive, program_files_dir))
         except WindowsError:
             continue
-        
+
         for dir_name in dir_list:
             match = re_vs.search(dir_name)
             if match is None:
                 continue
-            
-            vs_version = max(vs_version, int(re_vs_version.search(match.group()).group()))
+
+            vs_version = max(
+                vs_version, int(re_vs_version.search(match.group()).group()))
 
     generator = "Visual Studio {:d} {:s}".format(
         vs_version,
@@ -104,6 +108,7 @@ def get_win_generator():
     )
 
     return generator
+
 
 def get_cmake_commmand(build_dir, options):
     generator = None
@@ -121,6 +126,7 @@ def get_cmake_commmand(build_dir, options):
             generator))
 
     return " ".join(command_list)
+
 
 def is_root_dir_path(dir_path):
     if platform.system() == "Windows":
@@ -141,6 +147,7 @@ def clean(build_dir_path):
     shutil.rmtree(build_dir_path, ignore_errors=True)
 
     return 0
+
 
 def main():
     options = parse_option()
