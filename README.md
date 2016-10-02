@@ -65,7 +65,7 @@ Build Options:
 
 ### Execute CMake
 ```
->python gtestmake.py
+gtest-project-template>python gtestmake.py
 [2016-10-02 12:24:34.461000] INFO: gtestmake: -- The C compiler identification is MSVC 19.0.24215.1
 -- The CXX compiler identification is MSVC 19.0.24215.1
 -- Check for working C compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/x86_amd64/cl.exe
@@ -89,7 +89,7 @@ Build Options:
 
 ### Delete build outputs
 ```
->python gtestmake.py --clean
+gtest-project-template>python gtestmake.py --clean
 ```
 
 
