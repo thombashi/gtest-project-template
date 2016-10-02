@@ -1,5 +1,5 @@
 # gtest-project-template
-Test templete project of [Google Test](https://github.com/google/googletest).
+Test template project of [Google Test](https://github.com/google/googletest).
 
 ## Included
 - Google Test
