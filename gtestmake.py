@@ -165,6 +165,7 @@ def main():
     if options.clean:
         return clean(build_dir)
 
+    os.makedirs(build_dir)
     runner = subprocrunner.SubprocessRunner(
         get_cmake_commmand(build_dir, options))
     runner.run()
