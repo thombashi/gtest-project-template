@@ -71,61 +71,72 @@ def parse_option():
     return parser.parse_args()
 
 
-def get_win_generator():
-    re_vs = re.compile("Microsoft Visual Studio [0-9]+[\.][0-9]+")
-    re_vs_version = re.compile("[0-9]+")
+class CMakeCommandBuilder():
 
-    search_drive_list = [
-        "C:",
-        "D:",
-    ]
-    program_files_dir_list = [
-        "Program Files",
-        "Program Files (x86)",
-    ]
-    vs_version = 0
+    def __init__(self, options):
+        self.__options = options
 
-    for search_drive, program_files_dir in itertools.product(
-            search_drive_list, program_files_dir_list):
+    def get_cmake_commmand(self, build_dir):
+        cmake_command_list = [
+            'cd {:s} && cmake ../{:s}'.format(
+                build_dir, self.__options.test_dir)
+        ]
 
-        try:
-            dir_list = os.listdir(
-                "{:s}\\{:s}".format(search_drive, program_files_dir))
-        except WindowsError:
-            continue
+        generator = self.__get_generator()
+        if generator is not None:
+            cmake_command_list.append('-G "{:s}"'.format(
+                generator))
 
-        for dir_name in dir_list:
-            match = re_vs.search(dir_name)
-            if match is None:
+        return " ".join(cmake_command_list)
+
+    @staticmethod
+    def __get_win_generator():
+        re_vs = re.compile("Microsoft Visual Studio [0-9]+[\.][0-9]+")
+        re_vs_version = re.compile("[0-9]+")
+
+        search_drive_list = [
+            "C:",
+            "D:",
+        ]
+        program_files_dir_list = [
+            "Program Files",
+            "Program Files (x86)",
+        ]
+        vs_version = 0
+
+        for search_drive, program_files_dir in itertools.product(
+                search_drive_list, program_files_dir_list):
+
+            try:
+                dir_list = os.listdir(
+                    "{:s}\\{:s}".format(search_drive, program_files_dir))
+            except WindowsError:
                 continue
 
-            vs_version = max(
-                vs_version, int(re_vs_version.search(match.group()).group()))
+            for dir_name in dir_list:
+                match = re_vs.search(dir_name)
+                if match is None:
+                    continue
 
-    generator = "Visual Studio {:d} {:s}".format(
-        vs_version,
-        "Win64" if platform.architecture()[0] == "64bit" else ""
-    )
+                vs_version = max(
+                    vs_version, int(re_vs_version.search(match.group()).group()))
 
-    return generator
+        generator = "Visual Studio {:d} {:s}".format(
+            vs_version,
+            "Win64" if platform.architecture()[0] == "64bit" else ""
+        )
 
+        return generator
 
-def get_cmake_commmand(build_dir, options):
-    generator = None
-    if all([
-        platform.system() == "Windows",
-        options.generator is None,
-    ]):
-        generator = get_win_generator()
+    def __get_generator(self):
+        generator = None
+        if all([
+            platform.system() == "Windows",
+            self.__options.generator is None,
+        ]):
+            generator = self.__get_win_generator()
 
-    command_list = [
-        'cd {:s} && cmake ../{:s}'.format(build_dir, options.test_dir)
-    ]
-    if generator is not None:
-        command_list.append('-G "{:s}"'.format(
-            generator))
-
-    return " ".join(command_list)
+        return generator
 
 
 def is_root_dir_path(dir_path):
@@ -167,8 +178,10 @@ def main():
 
     if not os.path.isdir(build_dir):
         os.makedirs(build_dir)
+
+    command_builder = CMakeCommandBuilder(options)
     runner = subprocrunner.SubprocessRunner(
-        get_cmake_commmand(build_dir, options))
+        command_builder.get_cmake_commmand(build_dir))
     runner.run()
     logger.info(runner.stdout)
 
