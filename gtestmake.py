@@ -30,10 +30,11 @@ DEFAULT_CMAKE_OPTIONS_FILE = "cmake_options.json"
 
 class BuildAction(object):
     CMAKE = "cmake"
+    RECMAKE = "recmake"
     CLEAN = "clean"
 
     DEFAULT = CMAKE
-    LIST = [CMAKE, CLEAN]
+    LIST = [CMAKE, RECMAKE, CLEAN]
 
 
 def parse_option():
@@ -61,7 +62,9 @@ def parse_option():
     group.add_argument(
         "--action", choices=BuildAction.LIST, default=BuildAction.DEFAULT,
         help="""
-        clean: delete build directory and exit.
+        cmake: execute CMake and exit.
+        clean: delete existing build directory and exit.
+        recmake: delete existing build directory and execute CMake after that.
         """)
 
     group = parser.add_argument_group("CMake Options")
@@ -215,13 +218,13 @@ def main():
         subprocrunner.logger.enable()
 
     build_dir = options.build_dir
-    if options.action == BuildAction.CLEAN:
+    if options.action in [BuildAction.CLEAN, BuildAction.RECMAKE]:
         return clean(build_dir)
 
     if not os.path.isdir(build_dir):
         os.makedirs(build_dir)
 
-    if options.action == BuildAction.CMAKE:
+    if options.action in [BuildAction.CMAKE, BuildAction.RECMAKE]:
         command_builder = CMakeCommandBuilder(options)
         runner = subprocrunner.SubprocessRunner(
             command_builder.get_cmake_commmand(build_dir))
