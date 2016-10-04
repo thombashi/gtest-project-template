@@ -3,7 +3,7 @@
 
 #include "gtest/gtest.h"
 
-class TestTemplate : public ::testing::Test
+class FixtureTemplate : public ::testing::Test
 {
 public:
   static void SetUpTestCase();
@@ -15,7 +15,7 @@ protected:
 };
 
 // Replace a parameter type to that you want to test
-class ParameterizedTestTemplate : public ::testing::TestWithParam<int>
+class ParameterizedFixtureTemplate : public ::testing::TestWithParam<int>
 {
 public:
   static void SetUpTestCase();
@@ -27,7 +27,7 @@ protected:
 };
 
 // Replace parameters type to that you want to test
-class CombineParameterizedTestTemplate
+class CombineParameterizedFixtureTemplate
     : public ::testing::TestWithParam<std::tuple<int, int>>
 {
 public:

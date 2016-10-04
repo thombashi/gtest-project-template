@@ -5,7 +5,7 @@
 using ::testing::Values;
 using ::testing::ValuesIn;
 
-TEST_P(ParameterizedTestTemplate, OneParamTemplate)
+TEST_P(ParameterizedFixtureTemplate, OneParamTemplate)
 {
     const auto param0 = GetParam();
 
@@ -14,5 +14,5 @@ TEST_P(ParameterizedTestTemplate, OneParamTemplate)
 
 INSTANTIATE_TEST_CASE_P(
     OneParamInstantiate,
-    ParameterizedTestTemplate,
+    ParameterizedFixtureTemplate,
     Values(1, 2, 3));

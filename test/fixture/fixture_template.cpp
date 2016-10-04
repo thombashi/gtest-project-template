@@ -1,49 +1,49 @@
 #include "fixture_template.h"
 
-void TestTemplate::SetUpTestCase()
+void FixtureTemplate::SetUpTestCase()
 {
 }
 
-void TestTemplate::TearDownTestCase()
+void FixtureTemplate::TearDownTestCase()
 {
 }
 
-void TestTemplate::SetUp()
+void FixtureTemplate::SetUp()
 {
 }
 
-void TestTemplate::TearDown()
+void FixtureTemplate::TearDown()
 {
 }
 
-void ParameterizedTestTemplate::SetUpTestCase()
+void ParameterizedFixtureTemplate::SetUpTestCase()
 {
 }
 
-void ParameterizedTestTemplate::TearDownTestCase()
+void ParameterizedFixtureTemplate::TearDownTestCase()
 {
 }
 
-void ParameterizedTestTemplate::SetUp()
+void ParameterizedFixtureTemplate::SetUp()
 {
 }
 
-void ParameterizedTestTemplate::TearDown()
+void ParameterizedFixtureTemplate::TearDown()
 {
 }
 
-void CombineParameterizedTestTemplate::SetUpTestCase()
+void CombineParameterizedFixtureTemplate::SetUpTestCase()
 {
 }
 
-void CombineParameterizedTestTemplate::TearDownTestCase()
+void CombineParameterizedFixtureTemplate::TearDownTestCase()
 {
 }
 
-void CombineParameterizedTestTemplate::SetUp()
+void CombineParameterizedFixtureTemplate::SetUp()
 {
 }
 
-void CombineParameterizedTestTemplate::TearDown()
+void CombineParameterizedFixtureTemplate::TearDown()
 {
 }

@@ -2,7 +2,7 @@
 #include "utils/gtestio.h"
 #include "gtest/gtest.h"
 
-TEST_F(TestTemplate, Template)
+TEST_F(FixtureTemplate, Template)
 {
     EXPECT_TRUE(false) << "replace this arbitrary test content";
 }
