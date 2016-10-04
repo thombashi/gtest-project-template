@@ -47,7 +47,7 @@ def parse_option():
         (defaults to '%(default)s').
         """)
 
-    group = parser.add_argument_group("Build Options")
+    group = parser.add_argument_group("CMake Options")
     group.add_argument(
         "--generator",
         help="""
