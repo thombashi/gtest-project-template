@@ -30,9 +30,11 @@ pip install --upgrade subprocrunner
 
 ## help
 ```
-usage: gtestmake.py [-h] [--clean] [--test-dir TEST_DIR]
-                    [--build-dir BUILD_DIR] [--generator GENERATOR]
-                    [--debug | --quiet]
+usage: gtestmake.py [-h] [--test-dir TEST_DIR] [--build-dir BUILD_DIR]
+                    [--action {cmake,clean}] [--cmake-options CMAKE_OPTIONS]
+                    [--generator GENERATOR] [--debug | --quiet]
+
+CMake wrapper
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -40,7 +42,6 @@ optional arguments:
   --quiet               suppress execution log messages.
 
 Directory Options:
-  --clean               delete build directory and exit.
   --test-dir TEST_DIR   relative path to the test case directory (defaults to
                         'test').
   --build-dir BUILD_DIR
@@ -48,6 +49,13 @@ Directory Options:
                         to 'build').
 
 Build Options:
+  --action {cmake,clean}
+                        clean: delete build directory and exit.
+
+CMake Options:
+  --cmake-options CMAKE_OPTIONS
+                        path to the CMake options file. use "{key :value,
+                        ...}" to set specific parameters.
   --generator GENERATOR
                         generator that pass to cmake. gtestmake automatically
                         make generator 'Visual Studio NN [arch]' and pass to
