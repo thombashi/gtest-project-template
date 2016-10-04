@@ -96,10 +96,8 @@ class CMakeCommandBuilder():
                 build_dir, self.__options.test_dir)
         ]
 
-        if dataproperty.is_not_empty_string(options.cmake_options):
-            with open(options.cmake_options) as f:
-                for key, value in six.iteritems(json.loads(f.read())):
-                    cmake_command_list.append('{}={}'.format(key, value))
+        for key, value in six.iteritems(self.__read_cmake_options()):
+            cmake_command_list.append('{}={}'.format(key, value))
 
         generator = self.__get_generator()
         if generator is not None:
@@ -156,6 +154,21 @@ class CMakeCommandBuilder():
             generator = self.__get_win_generator()
 
         return generator
+
+    def __read_cmake_options(self):
+        file_path = self.__options.cmake_options
+
+        if dataproperty.is_empty_string(file_path):
+            return {}
+
+        if not os.path.isfile(file_path):
+            return {}
+
+        cmake_options = {}
+        with open(file_path) as f:
+            cmake_options = json.loads(f.read())
+
+        return cmake_options
 
 
 def is_root_dir_path(dir_path):
