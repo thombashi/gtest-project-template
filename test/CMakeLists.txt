@@ -25,6 +25,10 @@ enable_testing()
 #set(BUILD_GMOCK OFF CACHE BOOL "Build Google Mock library")
 add_subdirectory(gtest)
 
+#message("- aws-sdk-cpp ----------------------------------------")
+#find_package(aws-sdk-cpp)
+
+#add_definitions(-DUSE_IMPORT_EXPORT)
 
 message("- libraries ----------------------------------------")
 set(LIBS
