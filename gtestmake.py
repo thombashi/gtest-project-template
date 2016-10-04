@@ -28,6 +28,14 @@ logger = logbook.Logger(os.path.splitext(os.path.basename(__file__))[0])
 DEFAULT_CMAKE_OPTIONS_FILE = "cmake_options.json"
 
 
+class BuildAction(object):
+    CMAKE = "cmake"
+    CLEAN = "clean"
+
+    DEFAULT = CMAKE
+    LIST = [CMAKE, CLEAN]
+
+
 def parse_option():
     description = "CMake wrapper"
     epilog = ""
@@ -51,8 +59,10 @@ def parse_option():
 
     group = parser.add_argument_group("Build Options")
     group.add_argument(
-        "--clean", action="store_true", default=False,
-        help="delete build directory and exit.")
+        "--action", choices=BuildAction.LIST, default=BuildAction.DEFAULT,
+        help="""
+        clean: delete build directory and exit.
+        """)
 
     group = parser.add_argument_group("CMake Options")
     group.add_argument(
@@ -205,17 +215,18 @@ def main():
         subprocrunner.logger.enable()
 
     build_dir = options.build_dir
-    if options.clean:
+    if options.action == BuildAction.CLEAN:
         return clean(build_dir)
 
     if not os.path.isdir(build_dir):
         os.makedirs(build_dir)
 
-    command_builder = CMakeCommandBuilder(options)
-    runner = subprocrunner.SubprocessRunner(
-        command_builder.get_cmake_commmand(build_dir))
-    runner.run()
-    logger.info(runner.stdout)
+    if options.action == BuildAction.CMAKE:
+        command_builder = CMakeCommandBuilder(options)
+        runner = subprocrunner.SubprocessRunner(
+            command_builder.get_cmake_commmand(build_dir))
+        runner.run()
+        logger.info(runner.stdout)
 
     return 0
 
