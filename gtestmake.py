@@ -61,8 +61,7 @@ def parse_option():
         help="""
         path to the CMake options file. use "{key :value, ...}"
         to set specific parameters.
-        """
-    )
+        """)
     group.add_argument(
         "--generator",
         help="""
