@@ -37,9 +37,6 @@ def parse_option():
 
     group = parser.add_argument_group("Directory Options")
     group.add_argument(
-        "--clean", action="store_true", default=False,
-        help="delete build directory and exit.")
-    group.add_argument(
         "--test-dir", default="test",
         help="""
         relative path to the test case directory
@@ -51,6 +48,11 @@ def parse_option():
         relative path to the build output directory
         (defaults to '%(default)s').
         """)
+
+    group = parser.add_argument_group("Build Options")
+    group.add_argument(
+        "--clean", action="store_true", default=False,
+        help="delete build directory and exit.")
 
     group = parser.add_argument_group("CMake Options")
     group.add_argument(
