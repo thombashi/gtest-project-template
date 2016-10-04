@@ -1,5 +1,5 @@
 #include "fixture_template.h"
-#include "lib/gtestio.h"
+#include "utils/gtestio.h"
 #include "gtest/gtest.h"
 
 using ::testing::Values;
