@@ -7,20 +7,25 @@
 
 import argparse
 import itertools
+import json
 import os.path
 import platform
 import re
-import sys
 import shutil
+import sys
 
 import dataproperty
 import logbook
+import six
 import subprocrunner
 
 handler = logbook.StderrHandler()
 handler.push_application()
 
 logger = logbook.Logger(os.path.splitext(os.path.basename(__file__))[0])
+
+
+DEFAULT_CMAKE_OPTIONS_FILE = "cmake_options.json"
 
 
 def parse_option():
@@ -48,6 +53,14 @@ def parse_option():
         """)
 
     group = parser.add_argument_group("CMake Options")
+    group.add_argument(
+        "--cmake-options",
+        default=DEFAULT_CMAKE_OPTIONS_FILE,
+        help="""
+        path to the CMake options file. use "{key :value, ...}"
+        to set specific parameters.
+        """
+    )
     group.add_argument(
         "--generator",
         help="""
@@ -81,6 +94,11 @@ class CMakeCommandBuilder():
             'cd {:s} && cmake ../{:s}'.format(
                 build_dir, self.__options.test_dir)
         ]
+
+        if dataproperty.is_not_empty_string(options.cmake_options):
+            with open(options.cmake_options) as f:
+                for key, value in six.iteritems(json.loads(f.read())):
+                    cmake_command_list.append('{}={}'.format(key, value))
 
         generator = self.__get_generator()
         if generator is not None:
