@@ -165,7 +165,8 @@ def main():
     if options.clean:
         return clean(build_dir)
 
-    os.makedirs(build_dir)
+    if not os.path.isdir(build_dir):
+        os.makedirs(build_dir)
     runner = subprocrunner.SubprocessRunner(
         get_cmake_commmand(build_dir, options))
     runner.run()
