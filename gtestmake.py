@@ -24,7 +24,7 @@ logger = logbook.Logger(os.path.splitext(os.path.basename(__file__))[0])
 
 
 def parse_option():
-    description = ""
+    description = "CMake wrapper"
     epilog = ""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
