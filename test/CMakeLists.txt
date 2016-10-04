@@ -14,8 +14,34 @@ endif()
 
 
 message("- paths ----------------------------------------")
-set(WORKSPACE_ROOT ..)
+set(TEST_ROOT .) 
+set(WORKSPACE_ROOT ${TEST_ROOT}/..)
+set(UTILS_DIR ${TEST_ROOT}/utils)
+set(FIXTURE_DIR ${TEST_ROOT}/fixture)
+
+message("TEST_ROOT: ${TEST_ROOT}")
 message("WORKSPACE_ROOT: ${WORKSPACE_ROOT}")
+message("UTILS_DIR: ${UTILS_DIR}")
+message("FIXTURE_DIR: ${FIXTURE_DIR}")
+
+# includes ---
+set(INCLUDES
+	${UTILS_DIR}
+    ${FIXTURE_DIR}
+)
+
+message("INCLUDES: ${INCLUDES}")
+include_directories(${INCLUDES})
+
+# sources ---
+file(GLOB UTILS_CPP ${UTILS_DIR}/*.cpp)
+file(GLOB FIXTURE_CPP ${FIXTURE_DIR}/*.cpp)
+set(SOURCES
+	${UTILS_CPP}
+    ${FIXTURE_CPP}
+)
+
+message("SOURCES: ${SOURCES}")
 
 
 message("- gtest ----------------------------------------")
@@ -55,7 +81,7 @@ foreach(TEST_NAME ${TEST_LIST})
     # todo: add/delete sources
     add_executable(${EXEC_NAME}
         ${TEST_NAME}.cpp
-        fixture_template.cpp
+        ${SOURCES}
     )
 
     target_link_libraries(${EXEC_NAME} ${LIBS})
