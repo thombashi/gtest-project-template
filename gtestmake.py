@@ -220,7 +220,9 @@ def main():
 
     build_dir = options.build_dir
     if options.action in [BuildAction.CLEAN, BuildAction.RECMAKE]:
-        return clean(build_dir)
+        result = clean(build_dir)
+        if options.action == BuildAction.CLEAN:
+            return result
 
     if not os.path.isdir(build_dir):
         os.makedirs(build_dir)
