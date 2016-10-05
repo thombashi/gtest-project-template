@@ -6,10 +6,10 @@ project(${PROJECT_NAME} CXX)
 
 message("- build flags ----------------------------------------")
 if(${CMAKE_GENERATOR} MATCHES "Visual Studio [0-9]+")
-	message(${CMAKE_GENERATOR})
+    message(${CMAKE_GENERATOR})
 
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 endif()
 
 
@@ -26,7 +26,7 @@ message("FIXTURE_DIR: ${FIXTURE_DIR}")
 
 # includes ---
 set(INCLUDES
-	${UTILS_DIR}
+    ${UTILS_DIR}
     ${FIXTURE_DIR}
 )
 
@@ -37,7 +37,7 @@ include_directories(${INCLUDES})
 file(GLOB UTILS_CPP ${UTILS_DIR}/*.cpp)
 file(GLOB FIXTURE_CPP ${FIXTURE_DIR}/*.cpp)
 set(SOURCES
-	${UTILS_CPP}
+    ${UTILS_CPP}
     ${FIXTURE_CPP}
 )
 
