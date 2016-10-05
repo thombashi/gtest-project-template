@@ -14,8 +14,8 @@ endif()
 
 
 message("- paths ----------------------------------------")
-set(TEST_ROOT .) 
-set(WORKSPACE_ROOT ${TEST_ROOT}/..)
+get_filename_component(TEST_ROOT . ABSOLUTE) 
+get_filename_component(WORKSPACE_ROOT ${TEST_ROOT}/.. ABSOLUTE)
 set(UTILS_DIR ${TEST_ROOT}/utils)
 set(FIXTURE_DIR ${TEST_ROOT}/fixture)
 
