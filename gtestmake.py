@@ -245,6 +245,7 @@ def main():
             command_builder.get_cmake_commmand(build_dir))
         runner.run()
         logger.info(runner.stdout)
+        logger.info(runner.stderr)
 
     return 0
 
