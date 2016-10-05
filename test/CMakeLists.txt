@@ -19,6 +19,9 @@ get_filename_component(WORKSPACE_ROOT ${TEST_ROOT}/.. ABSOLUTE)
 set(UTILS_DIR ${TEST_ROOT}/utils)
 set(FIXTURE_DIR ${TEST_ROOT}/fixture)
 
+message("CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+message("PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+
 message("TEST_ROOT: ${TEST_ROOT}")
 message("WORKSPACE_ROOT: ${WORKSPACE_ROOT}")
 message("UTILS_DIR: ${UTILS_DIR}")
