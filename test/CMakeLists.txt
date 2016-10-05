@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 set(PROJECT_NAME gtest_project_template)  # todo: rename project
-project(${PROJECT_NAME})
+project(${PROJECT_NAME} CXX)
 
 
 message("- build flags ----------------------------------------")
