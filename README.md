@@ -1,5 +1,5 @@
 # gtest-project-template
-Test template project of [Google Test](https://github.com/google/googletest).
+Test template project of [Google Test](https://github.com/google/googletest) for C++.
 
 ## Included
 - Google Test
@@ -31,8 +31,10 @@ pip install --upgrade subprocrunner
 ## help
 ```
 usage: gtestmake.py [-h] [--test-dir TEST_DIR] [--build-dir BUILD_DIR]
-                    [--action {cmake,clean}] [--cmake-options CMAKE_OPTIONS]
-                    [--generator GENERATOR] [--debug | --quiet]
+                    [--action {cmake,recmake,clean}]
+                    [--cmake-options CMAKE_OPTIONS]
+                    [--build-type {Debug,Release}] [--generator GENERATOR]
+                    [--debug | --quiet]
 
 CMake wrapper
 
@@ -49,13 +51,19 @@ Directory Options:
                         to 'build').
 
 Build Options:
-  --action {cmake,clean}
-                        clean: delete build directory and exit.
+  --action {cmake,recmake,clean}
+                        cmake: execute CMake and exit. clean: delete existing
+                        build directory and exit. recmake: delete existing
+                        build directory and execute CMake after that. defaults
+                        to 'cmake'.
 
 CMake Options:
   --cmake-options CMAKE_OPTIONS
                         path to the CMake options file. use "{key :value,
-                        ...}" to set specific parameters.
+                        ...}" to set specific parameters. defaults to
+                        cmake_options.json.
+  --build-type {Debug,Release}
+                        defaults to Debug.
   --generator GENERATOR
                         generator that pass to cmake. gtestmake automatically
                         make generator 'Visual Studio NN [arch]' and pass to
@@ -97,7 +105,7 @@ gtest-project-template>python gtestmake.py
 
 ### Delete build outputs
 ```
-gtest-project-template>python gtestmake.py --clean
+gtest-project-template>python gtestmake.py --action clean
 ```
 
 
