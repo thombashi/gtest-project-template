@@ -37,6 +37,14 @@ class BuildAction(object):
     LIST = [CMAKE, RECMAKE, CLEAN]
 
 
+class BuildType(object):
+    DEBUG = "Debug"
+    RELEASE = "Release"
+
+    DEFAULT = DEBUG
+    LIST = [DEBUG, RELEASE]
+
+
 def parse_option():
     description = "CMake wrapper"
     epilog = ""
@@ -77,6 +85,9 @@ def parse_option():
         to set specific parameters. defaults to %(default)s.
         """)
     group.add_argument(
+        "--build-type", choices=BuildType.LIST, default=BuildType.DEFAULT,
+        help="defaults to %(default)s.")
+    group.add_argument(
         "--generator",
         help="""
         generator that pass to cmake.
@@ -107,7 +118,8 @@ class CMakeCommandBuilder():
     def get_cmake_commmand(self, build_dir):
         cmake_command_list = [
             'cd {:s} && cmake ../{:s}'.format(
-                build_dir, self.__options.test_dir)
+                build_dir, self.__options.test_dir),
+            "-DCMAKE_BUILD_TYPE={:s}".format(self.__options.build_type),
         ]
 
         for key, value in six.iteritems(self.__read_cmake_options()):
