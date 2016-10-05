@@ -1,5 +1,5 @@
-#ifndef __GTESTIO_H__
-#define __GTESTIO_H__
+#ifndef __GTEST_PROJECT_TEMPLATE_GTESTIO_H__
+#define __GTEST_PROJECT_TEMPLATE_GTESTIO_H__
 
 #include "gtest/gtest.h"
 
