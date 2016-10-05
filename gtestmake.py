@@ -65,6 +65,7 @@ def parse_option():
         cmake: execute CMake and exit.
         clean: delete existing build directory and exit.
         recmake: delete existing build directory and execute CMake after that.
+        defaults to '%(default)s'.
         """)
 
     group = parser.add_argument_group("CMake Options")
@@ -73,7 +74,7 @@ def parse_option():
         default=DEFAULT_CMAKE_OPTIONS_FILE,
         help="""
         path to the CMake options file. use "{key :value, ...}"
-        to set specific parameters.
+        to set specific parameters. defaults to %(default)s.
         """)
     group.add_argument(
         "--generator",
