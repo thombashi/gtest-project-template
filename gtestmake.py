@@ -110,6 +110,98 @@ def parse_option():
     return parser.parse_args()
 
 
+class VisualStudioInfo(object):
+    __RE_VS_DIR_NAME = re.compile("Microsoft Visual Studio [0-9]+[\.][0-9]+")
+    __RE_VS_VERSION = re.compile("[0-9]+[\.][0-9]+")
+
+    VersionInfo = namedtuple("VersionInfo", "major minor")
+
+    @property
+    def version_info(self):
+        return self.__max_version_info
+
+    @property
+    def msbuild_path(self):
+        return self.__msbuild_path
+
+    def __init__(self, search_drive_list=["C:"]):
+        self.__version_info_set = set()
+        self.__max_version_info = None
+        self.__msbuild_path = None
+
+        if platform.system() != "Windows":
+            return
+
+        self.__program_files_dir_list = [
+            "Program Files",
+            "Program Files (x86)",
+        ]
+
+        self.__detect_version(search_drive_list)
+        self.__detect_msbuild(search_drive_list)
+
+    def __detect_version(self, search_drive_list):
+        max_vs_version = 0
+
+        for search_drive, program_files_dir in itertools.product(
+                search_drive_list, self.__program_files_dir_list):
+
+            try:
+                dir_list = os.listdir(
+                    "{:s}\\{:s}".format(search_drive, program_files_dir))
+            except WindowsError:
+                continue
+
+            for dir_name in dir_list:
+                match = self.__RE_VS_DIR_NAME.search(dir_name)
+                if match is None:
+                    continue
+
+                version_string = self.__RE_VS_VERSION.search(
+                    match.group()).group()
+                vs_version = float(version_string)
+                version_info = self.VersionInfo(*[
+                    int(ver) for ver in version_string.split(".")])
+                self.__version_info_set.add(version_info)
+
+                if vs_version > max_vs_version:
+                    max_vs_version = vs_version
+                    self.__max_version_info = version_info
+
+    def __detect_msbuild(self, search_drive_list):
+        for search_drive, program_files_dir in itertools.product(
+                search_drive_list, self.__program_files_dir_list):
+
+            try:
+                dir_list = os.listdir(
+                    "{:s}\\{:s}".format(search_drive, program_files_dir))
+            except WindowsError:
+                continue
+
+            for dir_name in dir_list:
+                if dir_name != "MSBuild":
+                    continue
+
+                for version_info in reversed(sorted(self.__version_info_set)):
+                    msbuild_path = "/".join([
+                        search_drive,
+                        program_files_dir,
+                        dir_name,
+                        "{:d}.{:d}".format(
+                            version_info.major, version_info.minor),
+                        "Bin",
+                        "MSBuild.exe",
+                    ])
+
+                    if os.path.isfile(msbuild_path):
+                        self.__msbuild_path = msbuild_path
+                        return
+
+        #raise OSError("MSBuild not found")
+
+_vsinfo = VisualStudioInfo()
+
+
 class CMakeCommandBuilder(object):
 
     def __init__(self, options):
@@ -134,42 +226,10 @@ class CMakeCommandBuilder(object):
 
     @staticmethod
     def __get_win_generator():
-        re_vs = re.compile("Microsoft Visual Studio [0-9]+[\.][0-9]+")
-        re_vs_version = re.compile("[0-9]+")
-
-        search_drive_list = [
-            "C:",
-            "D:",
-        ]
-        program_files_dir_list = [
-            "Program Files",
-            "Program Files (x86)",
-        ]
-        vs_version = 0
-
-        for search_drive, program_files_dir in itertools.product(
-                search_drive_list, program_files_dir_list):
-
-            try:
-                dir_list = os.listdir(
-                    "{:s}\\{:s}".format(search_drive, program_files_dir))
-            except WindowsError:
-                continue
-
-            for dir_name in dir_list:
-                match = re_vs.search(dir_name)
-                if match is None:
-                    continue
-
-                vs_version = max(
-                    vs_version, int(re_vs_version.search(match.group()).group()))
-
-        generator = "Visual Studio {:d} {:s}".format(
-            vs_version,
+        return "Visual Studio {:d} {:s}".format(
+            _vsinfo.version_info.major,
             "Win64" if platform.architecture()[0] == "64bit" else ""
         )
-
-        return generator
 
     def __get_generator(self):
         generator = None
