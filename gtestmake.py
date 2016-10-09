@@ -323,7 +323,9 @@ def main():
     build_dir = options.build_dir
     if options.action in [BuildAction.CLEAN, BuildAction.REBUILD]:
         result = clean(build_dir)
-        return result
+
+        if options.action == BuildAction.CLEAN:
+            return result
 
     if options.action in [BuildAction.RECMAKE]:
         cmake_cache_path = "/".join([build_dir, "CMakeCache.txt"])
