@@ -31,7 +31,7 @@ pip install --upgrade subprocrunner
 ## help
 ```
 usage: gtestmake.py [-h] [--test-dir TEST_DIR] [--build-dir BUILD_DIR]
-                    [--action {cmake,recmake,clean}]
+                    [--action {cmake,recmake,clean,build,rebuild}]
                     [--cmake-options CMAKE_OPTIONS]
                     [--build-type {Debug,Release}] [--generator GENERATOR]
                     [--debug | --quiet]
@@ -51,11 +51,14 @@ Directory Options:
                         to 'build').
 
 Build Options:
-  --action {cmake,recmake,clean}
+  --action {cmake,recmake,clean,build,rebuild}
                         cmake: execute CMake and exit. clean: delete existing
                         build directory and exit. recmake: delete existing
-                        build directory and execute CMake after that. defaults
-                        to 'cmake'.
+                        CMakeCache and execute CMake after that. build:
+                        execute MSBuild to Visual Studio solution files that
+                        created by cmake. rebuild: delete existing build
+                        directory and execute CMake and MSBuild after that.
+                        defaults to 'build'.
 
 CMake Options:
   --cmake-options CMAKE_OPTIONS
