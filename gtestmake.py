@@ -6,6 +6,7 @@
 """
 
 import argparse
+from collections import namedtuple
 import itertools
 import json
 import os.path
@@ -19,11 +20,11 @@ import logbook
 import six
 import subprocrunner
 
+
 handler = logbook.StderrHandler()
 handler.push_application()
 
 logger = logbook.Logger(os.path.splitext(os.path.basename(__file__))[0])
-
 
 DEFAULT_CMAKE_OPTIONS_FILE = "cmake_options.json"
 
@@ -32,9 +33,11 @@ class BuildAction(object):
     CMAKE = "cmake"
     RECMAKE = "recmake"
     CLEAN = "clean"
+    BUILD = "build"
+    REBUILD = "rebuild"
 
-    DEFAULT = CMAKE
-    LIST = [CMAKE, RECMAKE, CLEAN]
+    DEFAULT = BUILD
+    LIST = [CMAKE, RECMAKE, CLEAN, BUILD, REBUILD]
 
 
 class BuildType(object):
@@ -72,7 +75,9 @@ def parse_option():
         help="""
         cmake: execute CMake and exit.
         clean: delete existing build directory and exit.
-        recmake: delete existing build directory and execute CMake after that.
+        recmake: delete existing CMakeCache and execute CMake after that.
+        build: execute MSBuild to Visual Studio solution files that created by cmake.
+        rebuild: delete existing build directory and execute CMake and MSBuild after that.
         defaults to '%(default)s'.
         """)
 
@@ -278,6 +283,31 @@ def clean(build_dir_path):
     return 0
 
 
+def find_solution_file_list(root_path):
+    re_solution = re.compile("[\.]sln$")
+    solution_file_path_list = []
+
+    for filename in os.listdir(root_path):
+        if re_solution.search(filename) is None:
+            continue
+
+        solution_file_path_list.append("/".join([root_path, filename]))
+
+    return solution_file_path_list
+
+
+def build(build_dir):
+    for solution_file in find_solution_file_list(build_dir):
+        build_command = '"{:s}" {:s}'.format(
+            _vsinfo.msbuild_path, solution_file)
+
+        runner = subprocrunner.SubprocessRunner(build_command)
+        runner.run()
+        logger.info(runner.stdout)
+        if dataproperty.is_not_empty_string(runner.stderr):
+            logger.error(runner.stderr)
+
+
 def main():
     options = parse_option()
 
@@ -291,21 +321,30 @@ def main():
         subprocrunner.logger.enable()
 
     build_dir = options.build_dir
-    if options.action in [BuildAction.CLEAN, BuildAction.RECMAKE]:
+    if options.action in [BuildAction.CLEAN, BuildAction.REBUILD]:
         result = clean(build_dir)
-        if options.action == BuildAction.CLEAN:
-            return result
+        return result
+
+    if options.action in [BuildAction.RECMAKE]:
+        cmake_cache_path = "/".join([build_dir, "CMakeCache.txt"])
+        logger.debug("delete {:s}".format(cmake_cache_path))
+        os.remove(cmake_cache_path)
 
     if not os.path.isdir(build_dir):
         os.makedirs(build_dir)
 
-    if options.action in [BuildAction.CMAKE, BuildAction.RECMAKE]:
+    if options.action in [
+            BuildAction.CMAKE, BuildAction.RECMAKE,
+            BuildAction.BUILD, BuildAction.REBUILD]:
         command_builder = CMakeCommandBuilder(options)
         runner = subprocrunner.SubprocessRunner(
             command_builder.get_cmake_commmand(build_dir))
         runner.run()
         logger.info(runner.stdout)
         logger.info(runner.stderr)
+
+    if options.action in [BuildAction.BUILD, BuildAction.REBUILD]:
+        build(build_dir)
 
     return 0
 
