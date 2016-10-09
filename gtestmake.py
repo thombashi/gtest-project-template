@@ -110,7 +110,7 @@ def parse_option():
     return parser.parse_args()
 
 
-class CMakeCommandBuilder():
+class CMakeCommandBuilder(object):
 
     def __init__(self, options):
         self.__options = options
