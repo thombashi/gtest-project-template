@@ -333,6 +333,7 @@ def main():
         os.remove(cmake_cache_path)
 
     if not os.path.isdir(build_dir):
+        logger.debug("make directory: {:s}".format(build_dir))
         os.makedirs(build_dir)
 
     if options.action in [
