@@ -22,58 +22,9 @@ git clone https://github.com/thombashi/gtest-project-template.git --recursive
 
 ## Installation
 ```
-pip install --upgrade subprocrunner
+pip install cmakew --upgrade
 ```
 
-- Note: required [Python](https://www.python.org/) 2.7+ or 3.3+
-
-
-## help
-```
-usage: gtestmake.py [-h] [--test-dir TEST_DIR] [--build-dir BUILD_DIR]
-                    [--action {cmake,recmake,clean,build,rebuild}]
-                    [--cmake-options CMAKE_OPTIONS]
-                    [--build-type {Debug,Release}] [--generator GENERATOR]
-                    [--debug | --quiet]
-
-CMake wrapper
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --debug               for debug print.
-  --quiet               suppress execution log messages.
-
-Directory Options:
-  --test-dir TEST_DIR   relative path to the test case directory (defaults to
-                        'test').
-  --build-dir BUILD_DIR
-                        relative path to the build output directory (defaults
-                        to 'build').
-
-Build Options:
-  --action {cmake,recmake,clean,build,rebuild}
-                        cmake: execute CMake and exit. clean: delete existing
-                        build directory and exit. recmake: delete existing
-                        CMakeCache and execute CMake after that. build:
-                        execute MSBuild to Visual Studio solution files that
-                        created by cmake. rebuild: delete existing build
-                        directory and execute CMake and MSBuild after that.
-                        defaults to 'build'.
-
-CMake Options:
-  --cmake-options CMAKE_OPTIONS
-                        path to the CMake options file. use "{key :value,
-                        ...}" to set specific parameters. defaults to
-                        cmake_options.json.
-  --build-type {Debug,Release}
-                        defaults to Debug.
-  --generator GENERATOR
-                        generator that pass to cmake. gtestmake automatically
-                        make generator 'Visual Studio NN [arch]' and pass to
-                        cmake if: (1) executed on Windows platform. (2)
-                        executed without --generator option. (3) Visual Studio
-                        is installed in C: or D: drive.
-```
 
 ## Example
 ### Environment
@@ -84,32 +35,9 @@ CMake Options:
 
 ### Execute CMake
 ```
-gtest-project-template>python gtestmake.py
-[2016-10-02 12:24:34.461000] INFO: gtestmake: -- The C compiler identification is MSVC 19.0.24215.1
--- The CXX compiler identification is MSVC 19.0.24215.1
--- Check for working C compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/x86_amd64/cl.exe
--- Check for working C compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/x86_amd64/cl.exe -- works
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/x86_amd64/cl.exe
--- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/x86_amd64/cl.exe -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Found PythonInterp: C:/Python27/python.exe (found version "2.7.12")
--- Looking for pthread.h
--- Looking for pthread.h - not found
--- Found Threads: TRUE
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/dev/workspace/gtest-project-template/build
+gtest-project-template> cmakew test
 ```
 
-### Delete build outputs
-```
-gtest-project-template>python gtestmake.py --action clean
-```
 
 
 # Dependency
@@ -121,4 +49,4 @@ gtest-project-template>python gtestmake.py --action clean
 - [Python](https://www.python.org/)
 
 ### Optional Python packages
-- [subprocrunner](https://github.com/thombashi/subprocrunner)
+- [cmakew](https://github.com/thombashi/cmakew)
