@@ -27,8 +27,7 @@ protected:
 };
 
 // Replace parameters type to that you want to test
-class CombineParameterizedFixtureTemplate
-    : public ::testing::TestWithParam<std::tuple<int, int>>
+class CombineParameterizedFixtureTemplate : public ::testing::TestWithParam<std::tuple<int, int>>
 {
 public:
   static void SetUpTestCase();
