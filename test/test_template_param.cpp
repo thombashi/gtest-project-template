@@ -15,4 +15,5 @@ TEST_P(ParameterizedFixtureTemplate, OneParamTemplate)
 INSTANTIATE_TEST_CASE_P(
     OneParamInstantiate,
     ParameterizedFixtureTemplate,
-    Values(1, 2, 3));
+    Values(1, 2, 3) // testing values
+    );

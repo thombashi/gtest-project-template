@@ -18,5 +18,6 @@ INSTANTIATE_TEST_CASE_P(
     TwoParamInstantiate,
     CombineParameterizedFixtureTemplate,
     Combine(
-        Values(1, 2, 3),
-        Values(11, 12, 13)));
+        Values(1, 2, 3),   // first parameter values
+        Values(11, 12, 13) // second parameter values
+        ));
