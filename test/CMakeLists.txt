@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5.2)
 
 set(PROJECT_NAME gtest_project_template)  # todo: rename project
 project(${PROJECT_NAME} CXX)
@@ -14,7 +14,7 @@ endif()
 
 
 message("- paths ----------------------------------------")
-get_filename_component(TEST_ROOT . ABSOLUTE) 
+get_filename_component(TEST_ROOT . ABSOLUTE)
 get_filename_component(WORKSPACE_ROOT ${TEST_ROOT}/.. ABSOLUTE)
 set(UTILS_DIR ${TEST_ROOT}/utils)
 set(FIXTURE_DIR ${TEST_ROOT}/fixture)
@@ -86,6 +86,8 @@ foreach(TEST_NAME ${TEST_LIST})
         ${TEST_NAME}.cpp
         ${SOURCES}
     )
+    set_property(TARGET ${EXEC_NAME} PROPERTY CXX_STANDARD 11)
+    set_property(TARGET ${EXEC_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
     target_link_libraries(${EXEC_NAME} ${LIBS})
     add_test(
