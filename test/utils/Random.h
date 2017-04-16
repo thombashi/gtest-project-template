@@ -3,6 +3,7 @@
 
 #include <random>
 #include <string>
+#include <wchar.h>
 
 template <typename T>
 class RandomNumberGenerator
@@ -56,5 +57,6 @@ class RandomStringGenerator
 };
 
 using RandomStdStringGenerator = RandomStringGenerator<std::string, char>;
+using RandomStdWstringGenerator = RandomStringGenerator<std::wstring, wchar_t>;
 
 #endif
