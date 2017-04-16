@@ -1,9 +1,10 @@
 #ifndef __MIRAI_FILE_H__
 #define __MIRAI_FILE_H__
 
+#include <cstdint>
 #include <fstream>
 
-inline long long GetFileSize(const std::string &file_path)
+inline uint64_t GetFileSize(const std::string &file_path)
 {
     std::ifstream file(file_path, std::ios::binary | std::ios::ate);
 
