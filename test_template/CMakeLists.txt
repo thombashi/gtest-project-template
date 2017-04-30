@@ -37,10 +37,10 @@ message("INCLUDES: ${INCLUDES}")
 include_directories(${INCLUDES})
 
 # sources ---
-file(GLOB UTILS_CPP ${UTILS_DIR}/*.cpp)
+# file(GLOB UTILS_CPP ${UTILS_DIR}/*.cpp)
 file(GLOB FIXTURE_CPP ${FIXTURE_DIR}/*.cpp)
 set(SOURCES
-    ${UTILS_CPP}
+    # ${UTILS_CPP}
     ${FIXTURE_CPP}
 )
 
