@@ -16,8 +16,8 @@ git clone https://github.com/thombashi/gtest-project-template.git --recursive
 ```
 
 
-## CMake wrapper tool (optional)
-[cmake](https://cmake.org/download/)
+## CMake/Compiler wrapper tool (optional)
+[cmakew](https://github.com/thombashi/cmakew)
 
 ```
 pip install cmakew --upgrade
@@ -42,3 +42,5 @@ $ cmakew test
 # Dependency
 ## Mandatory
 - [googletest](https://github.com/google/googletest.git)
+- [cmake](https://cmake.org/download/)
+- Compiler: ``Visual Studio``, ``gcc``, etc.
