@@ -10,6 +10,8 @@ if(${CMAKE_GENERATOR} MATCHES "Visual Studio [0-9]+")
 
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+else()
+    set(CMAKE_CXX_FLAGS "-std=c++11")
 endif()
 
 
